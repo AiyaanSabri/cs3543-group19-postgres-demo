@@ -61,18 +61,3 @@ Keep `--shm-size=1g`. Docker's default shared memory is too small for the parall
 | 2. Sniffing and forcing | Prepared statement, 5 warm-up runs, then Amazon | The generic plan (`$1`) estimates ~74 rows and gets 288,361, so it picks a Nested Loop instead of a Hash Join. Fixed with `plan_cache_mode`. |
 | 3. Big join | Top 10 MCC report, then `enable_hashjoin` / `enable_mergejoin` off | Two hash joins. The cost goes ~131.8k (hash) → ~244.6k (merge) → ~596.7k (nested loop). |
 | 4. Memory | Same report at `work_mem` 64kB / 4MB / 256MB | Batches go 2048 → 32 → 1, and the temp files disappear. |
-
-## Notes
-
-- **Costs can differ slightly between laptops** (e.g. 131,801 vs 131,799), because `ANALYZE` uses a random sample. Plan shapes are the same.
-- Everything fits in RAM on a laptop, so a "bad" plan may not run slower here. Compare estimated vs actual rows and costs, not milliseconds.
-- PostgreSQL doesn't auto-index foreign keys. `setup.sql` creates `ix_tx_purchase_merchant` explicitly.
-
-## Sources
-
-- [Using EXPLAIN](https://www.postgresql.org/docs/current/using-explain.html)
-- [Statistics used by the planner](https://www.postgresql.org/docs/current/planner-stats.html) and [row estimation examples](https://www.postgresql.org/docs/current/row-estimation-examples.html)
-- [PREPARE / plan caching](https://www.postgresql.org/docs/current/sql-prepare.html)
-- [Query planning settings](https://www.postgresql.org/docs/current/runtime-config-query.html)
-- [Resource consumption (`work_mem`, `hash_mem_multiplier`)](https://www.postgresql.org/docs/current/runtime-config-resource.html)
-- [Parallel plans](https://www.postgresql.org/docs/current/parallel-plans.html)
