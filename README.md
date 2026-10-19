@@ -76,4 +76,3 @@ Keep `--shm-size=1g`. Docker's default shared memory is too small for the parall
 - [Query planning settings](https://www.postgresql.org/docs/current/runtime-config-query.html)
 - [Resource consumption (`work_mem`, `hash_mem_multiplier`)](https://www.postgresql.org/docs/current/runtime-config-resource.html)
 - [Parallel plans](https://www.postgresql.org/docs/current/parallel-plans.html)
-- GlobalCard schema: CS3543 case study, A. McAllister
